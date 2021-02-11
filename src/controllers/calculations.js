@@ -8,7 +8,7 @@ exports.getMonthlyRent = (req, res, next) => {
     let leaseStart = req.body.leaseStart;
     let leaseEnd = req.body.leaseEnd;
     let monthlyRentAmount = req.body.monthlyRentAmount;
-
+    
     if(!leaseStart) return res.status(400).send({message : 'Expected argument \'leaseStart\' in payload'});
     if(!leaseEnd) return res.status(400).send({message : 'Expected argument \'leaseEnd\' in payload'});
     if(!monthlyRentAmount) return res.status(400).send({message : 'Expected argument \'monthlyRentAmount\' in payload'});
@@ -29,7 +29,7 @@ exports.getMonthlyRent = (req, res, next) => {
     const durationInMonth = moment.duration(leaseEnd.diff(leaseStart)).asMonths();
 
     for(let index = 0; index <= Math.floor(durationInMonth); index += 1) {
-        const startDate = moment(new Date(new Date(leaseStart).setMonth(new Date(leaseStart).getMonth()+index)).setDate(index > 0 ? 01 : new Date(leaseStart).getDate()));
+        const startDate = moment(new Date(new Date(leaseStart).setMonth(new Date(leaseStart).getMonth()+index)).setDate(index > 0 ? 1 : new Date(leaseStart).getDate()));
         const isFullMonth = duration >= (startDate.daysInMonth() - new Date(startDate).getDate() + 1) ? true : false;
 
         if(isFullMonth) {
