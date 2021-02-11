@@ -37,7 +37,7 @@ exports.getMonthlyRent = (req, res, next) => {
         }
 
         const endDate = moment(new Date(new Date(startDate).setDate(isFullMonth ? startDate.daysInMonth()+1 : new Date(new Date(startDate).getDate()+duration+1))).setHours(18,30,0));
-        const days =  moment.duration(endDate.diff(moment(startDate))).asDays();
+        const days =  Math.round(moment.duration(endDate.diff(moment(startDate))).asDays());
         const daysInMonth = startDate.daysInMonth();
         
         if(days)
