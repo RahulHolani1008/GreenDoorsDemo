@@ -15,6 +15,7 @@ const calculationRoutes = require("./src/routes/calculationRoutes.js");
 const routes = require("./src/routes/routes.js");
 
 app.use('/calculations', calculationRoutes);
+// Always leave this route at the very end
 app.use('*', routes);
 
 app.listen(3000);

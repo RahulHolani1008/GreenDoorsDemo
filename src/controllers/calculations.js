@@ -19,11 +19,11 @@ exports.getMonthlyRent = (req, res, next) => {
 
     if(startDateFormat == invalidDate || endDateFormat == invalidDate) {
         return res.status(400).send({message : "Please enter date in format 'YYYY-MM-DD' OR 'MM/DD/YYYY'"});
-    } else {
-        leaseStart = moment(leaseStart, startDateFormat);
-        leaseEnd = moment(leaseEnd, endDateFormat);
-        leaseEnd = moment(new Date(leaseEnd).setDate(new Date(leaseEnd).getDate() - 1));
-    };
+    }
+    
+    leaseStart = moment(leaseStart, startDateFormat);
+    leaseEnd = moment(leaseEnd, endDateFormat);
+    leaseEnd = moment(new Date(leaseEnd).setDate(new Date(leaseEnd).getDate() - 1));
 
     let duration = moment.duration(leaseEnd.diff(leaseStart)).asDays();
     const durationInMonth = moment.duration(leaseEnd.diff(leaseStart)).asMonths();
@@ -31,7 +31,7 @@ exports.getMonthlyRent = (req, res, next) => {
     for(let index = 0; index <= Math.floor(durationInMonth); index += 1) {
         const startDate = moment(new Date(new Date(leaseStart).setMonth(new Date(leaseStart).getMonth()+index)).setDate(index > 0 ? 01 : new Date(leaseStart).getDate()));
         const isFullMonth = duration >= (startDate.daysInMonth() - new Date(startDate).getDate() + 1) ? true : false;
-        
+
         if(isFullMonth) {
             duration -= (startDate.daysInMonth() - new Date(startDate).getDate() + 1);
         }
