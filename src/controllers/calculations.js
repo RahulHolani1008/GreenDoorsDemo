@@ -23,20 +23,20 @@ exports.getMonthlyRent = (req, res, next) => {
     
     leaseStart = moment(leaseStart, startDateFormat);
     leaseEnd = moment(leaseEnd, endDateFormat);
-    leaseEnd = moment(new Date(leaseEnd).setDate(new Date(leaseEnd).getDate() - 1));
+    leaseEnd = moment(new Date(new Date(leaseEnd).setDate(new Date(leaseEnd).getDate() - 1)).setHours(18,30,0));
 
     let duration = moment.duration(leaseEnd.diff(leaseStart)).asDays();
     const durationInMonth = moment.duration(leaseEnd.diff(leaseStart)).asMonths();
 
     for(let index = 0; index <= Math.floor(durationInMonth); index += 1) {
-        const startDate = moment(new Date(new Date(leaseStart).setMonth(new Date(leaseStart).getMonth()+index)).setDate(index > 0 ? 1 : new Date(leaseStart).getDate()));
+        const startDate = moment(new Date(new Date(new Date(leaseStart).setMonth(new Date(leaseStart).getMonth()+index)).setDate(index > 0 ? 1 : new Date(leaseStart).getDate())).setHours(18,30,0));
         const isFullMonth = duration >= (startDate.daysInMonth() - new Date(startDate).getDate() + 1) ? true : false;
 
         if(isFullMonth) {
-            duration -= (startDate.daysInMonth() - new Date(startDate).getDate() + 1);
+            duration -= (startDate.daysInMonth() - new Date(new Date(startDate).setHours(18,30,0)).getDate() + 1);
         }
 
-        const endDate = moment(new Date(startDate).setDate(isFullMonth ? startDate.daysInMonth()+1 : new Date(startDate).getDate()+duration+1));
+        const endDate = moment(new Date(new Date(startDate).setDate(isFullMonth ? startDate.daysInMonth()+1 : new Date(new Date(startDate).getDate()+duration+1))).setHours(18,30,0));
         const days =  moment.duration(endDate.diff(moment(startDate))).asDays();
         const daysInMonth = startDate.daysInMonth();
         
